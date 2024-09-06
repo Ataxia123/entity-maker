@@ -24,7 +24,7 @@ const CharacterProfileComponent = () => {
     // 2.5 - Si la entidad individual no existe crearla
     // 3 - Se crea la entidad conjunta referenciada a sus subentidades
 
-    
+    // añado cambio
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
