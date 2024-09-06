@@ -13,14 +13,26 @@ import { usertype } from "~~/types/dataTypes";
 
 // To access the profile in your components
 const CharacterProfileComponent = () => {
+
   const [characterName, setCharacterName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  //nos hacen falta dos calls
+    // 0 - Revisar si la entidad conjunta existe, si -> break,
+    // 1 - Revisa el n. entidades
+    // 2 - Revisar si cada entidad existe
+    // 2.5 - Si la entidad individual no existe crearla
+    // 3 - Se crea la entidad conjunta referenciada a sus subentidades
+
+    
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
+
     try {
+      //call a landchain
       const response = await fetch("/api/langchain", {
         method: "POST",
         headers: {
@@ -57,9 +69,10 @@ const CharacterProfileComponent = () => {
   );
 };
 
+//leyendo el NFT
 const NFTApp = () => {
   const { address: connectedAddress } = useAccount();
-  const contract = useScaffoldContract({ contractName: "WarpDrive" });
+  const contract = useScaffoldContract({ contractName: "WarpDrive" }); //contracto NFT
   const [selectedToken, setSelectedToken] = useState(1n);
   const [tgChat, setTgChat] = useState<number>(0);
   const [nftData, setNFTData] = useState({
@@ -87,7 +100,8 @@ const NFTApp = () => {
     filters: { to: connectedAddress },
     eventName: "Transfer",
     fromBlock: 15795907n,
-  });
+  }); //viendo transfers de la billetera, desde el deploy del contracto NFTs de la billetera
+  //se ha de añadir los que se han vendido
 
   const { data: uri } = useScaffoldReadContract({
     contractName: "WarpDrive",
@@ -95,10 +109,11 @@ const NFTApp = () => {
     args: [selectedToken],
   });
 
-  console.log(uri, "URI");
+  console.log(uri, "URI"); //metadata NFT
 
   const app = useGlobalState();
 
+  //fetch del Uri y te regresa la metadata
   const fetchNFT = async (data: string) => {
     if (!data) return console.log("no uri data");
     const response = await fetch(data);
@@ -200,6 +215,7 @@ const NFTApp = () => {
     await postToMongo(payload);
   };
 
+  //manda a la base de datos
   const postToMongo = async (payload: any) => {
     try {
       const res = await fetch("api/mongo", {
