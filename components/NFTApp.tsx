@@ -240,7 +240,7 @@ const NFTApp = () => {
       console.log(error);
     }
   };
-
+//test
   return (
     <>
       <div className="flex items-center flex-col pt-10">
